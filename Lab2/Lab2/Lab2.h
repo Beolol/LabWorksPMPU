@@ -15,6 +15,9 @@ public:
     explicit Lab2(QWidget *parent = 0);
     ~Lab2();
 
+private slots:
+    void on_btnStart_clicked();
+
 private:
     Ui::Lab2 *ui;
 };
