@@ -1,6 +1,10 @@
 #include "Lab1.h"
 #include "ui_Lab1.h"
 
+
+#include <QDebug>
+#include <QFile>
+
 Lab1::Lab1(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Lab1)
@@ -14,135 +18,143 @@ Lab1::~Lab1()
     delete ui;
 }
 
-void Lab1::Method()
+
+void Lab1::on_btnStart_clicked()
 {
+    GetSizeUAndUn();
+    SetUAndUn();
+    Calculation();
+    FilingResult();
+}
 
-double f1 (double y);
-double f2 (double y);
-double f3 (double x);
-double f4 (double x);
+void Lab1::GetSizeUAndUn()
+{
+    auto countStepX = ui->editGridNumberX->value();
+    auto countStepY = ui->editGridNumberY->value();
+    for( int i = 0; i< countStepX * countStepY; i++ )
+    {
+        U.push_back( 0 );
+        Un.push_back( 0 );
+    }
+}
 
-    FILE *fin;
-    int i, j, nn, mm, chet;
-    double a, b, eps, xa, yb, z, zz, maxraz, mold;
-    double *u, *un;
-    printf("Please enter a\n");
-    scanf("%lf",&a); //x принадлежит [0;a]
-    printf("Please enter number steps by x\n");
-    scanf("%d",&nn); //кол-во шагов сетки по x
-    printf("Please enter b\n");
-    scanf("%lf",&b); //x принадлежит [0;a]
-    printf("Please enter number steps by y\n");
-    scanf("%d",&mm); //кол-во шагов сетки по y
-    printf("Please enter eps\n");
-    scanf("%lf",&eps); //точность решения
-    xa = a/(nn-1); // шаг по x
-    yb = b/(mm-1); // шаг по
-    u = malloc(mm*nn*sizeof(double));
-    un = malloc(mm*nn*sizeof(double));
-    zz = eps;
-    maxraz = 2*eps;
-    for (i=0;i<nn;i++)
+void Lab1::SetUAndUn()
+{
+    gridOfX = ui->editGridNumberX->value();
+    gridOfY = ui->editGridNumberY->value();
+    auto stepX = ui->editRightX->value()/ (gridOfX-1);
+    auto stepY = ui->editRightY->value()/ (gridOfY-1);
+    for (int i=0;i< gridOfX; i++)
     {
-        u[i] = f3(i*xa);
-        un[i] = f3(i*xa);
-        u[i+nn*(mm-1)] = f4(i*xa);
-        un[i+nn*(mm-1)] = f4(i*xa);
+        U[i] = f3(i*stepX);
+        Un[i] = f3(i*stepX);
+        U[i+gridOfX*(gridOfY-1)] = f4(i*stepX);
+        Un[i+gridOfX*(gridOfY-1)] = f4(i*stepX);
     }
-    for (j=1;j<nn-1;j++)
+    for (int j=1;j<gridOfX;j++)
     {
-        u[j*nn] = f1(j*yb);
-        un[j*nn] = f1(j*yb);
-        u[nn-1+nn*j] = f2(j*yb);
-        un[nn-1+nn*j] = f2(j*yb);
+        U[j*(gridOfX+1)] = f1(j*stepY);
+        Un[j*(gridOfX+1)] = f1(j*stepY);
+        U[gridOfX-1+gridOfX*j] = f2(j*stepY);
+        Un[gridOfX-1+gridOfX*j] = f2(j*stepY);
     }
-    for (i=1;i<nn-1;i++)
+    for (int i=1;i<gridOfX-1;i++)
     {
-        for (j=1;j<mm-1;j++)
+        for (int j=1;j<gridOfY-1;j++)
         {
-            u[j*nn+i] = 0;
+            U[j*gridOfX+i] = 0;
         }
     }
-    chet = 0;
-    while (maxraz>=zz)
+}
+
+double Lab1::f1(double y)
+{
+    auto res = exp( y );
+    return res;
+}
+
+double Lab1::f2(double y)
+{
+    auto res = y + exp( 1 );
+    return res;
+}
+
+double Lab1::f3(double x)
+{
+    auto res = exp( x*x );
+    return res;
+}
+
+double Lab1::f4(double x)
+{
+    auto res = exp(x*x+1);
+    return res;
+}
+
+
+void Lab1::Calculation()
+{
+    int count = 0;
+    auto maxError = 2 * ui->editEps->value();
+    auto error = ui->editEps->value();
+
+    while (maxError>=error)
     {
-        chet++;
-        for (i=1;i<nn-1;i++)
+        count++;
+        for (int i=1;i<gridOfX-1;i++)
         {
-            for (j=1;j<mm-1;j++)
+            for (int j=1;j<gridOfY-1;j++)
             {
-                un[j*nn+i] = (un[(j-1)*nn+i]+un[j*nn+i-1]+u[(j+1)*nn+i]+u[j*nn+i+1])/4;
+                Un[j*gridOfX+i] = (Un[(j-1)*gridOfX+i]+Un[j*gridOfX+i-1]
+                                    +U[(j+1)*gridOfX+i]+U[j*gridOfX+i+1])/4;
             }
         }
-        mold = maxraz;
-        maxraz = 0;
-        for (i=1;i<nn-1;i++)
+        auto mold = maxError;
+        maxError = 0;
+        for (int i=1;i<gridOfX-1;i++)
         {
-            for (j=1;j<mm-1;j++)
+            for (int j=1;j<gridOfY-1;j++)
             {
-                if (fabs(un[j*nn+i]-u[j*nn+i])>maxraz)
+                if (fabs(Un[j*gridOfX+i]-U[j*gridOfX+i])>maxError)
                 {
-                    maxraz = fabs(un[j*nn+i]-u[j*nn+i]);
+                    maxError = fabs(Un[j*gridOfX+i]-U[j*gridOfX+i]);
 
                 }
             }
         }
-        zz = eps*(1-maxraz/mold);
-        for (i=1;i<nn-1;i++)
+        error = ui->editEps->value()*(1-maxError/mold);
+        for (int i=1;i<gridOfX-1;i++)
         {
-            for (j=1;j<mm-1;j++)
+            for (int j=1;j<gridOfY-1;j++)
             {
-                u[j*nn+i] = un[j*nn+i];
+                U[j*gridOfX+i] = Un[j*gridOfX+i];
             }
         }
     }
-    printf("%d\n", chet);
-    fin = fopen("1.txt","w");
-    for (j=mm-1;j>-1;j--)
+    qDebug() << count;
+}
+
+
+
+void Lab1::FilingResult()
+{
+    QFile file("1.txt");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
+
+    QTextStream out(&file);
+    double z;
+    for (int j=gridOfY-1;j>-1;j--)
     {
-        for (i=0;i<nn-1;i++)
+        for (int i=0;i<gridOfX-1;i++)
         {
-            z = u[i+j*nn];
+            z = U[i+j*gridOfX];
             z = round(100000*z)/100000;
-            fprintf(fin,"%lf\t",z);
+            out << z << "\t";
         }
-        z = u[nn-1+j*nn];
+        z = U[gridOfX-1+j*gridOfX];
         z = round(100000*z)/100000;
-        fprintf(fin,"%lf\n",z);
+        out << z << "\t";
     }
+    file.close();
 }
-
-double f1 (double y)
-{
-    double res, st;
-    st = y;
-    res = exp(st);
-    return(res);
-}
-
-double f2 (double y)
-{
-    double res, st;
-    st = 1;
-     res = y+exp(st);
-
-    return(res);
-}
-
-double f3 (double x)
-{
-    double res, st;
-    st = x*x;
-     res = exp(st);
-    return(res);
-}
-
-double f4 (double x)
-{
-    double res, st;
-    st = x*x+1;
-    res = exp(st);
-    return(res);
-}
-
-
