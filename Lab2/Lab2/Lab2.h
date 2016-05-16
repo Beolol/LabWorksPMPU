@@ -14,7 +14,8 @@ class Lab2 : public QDialog
 public:
     explicit Lab2(QWidget *parent = 0);
     ~Lab2();
-
+    InitParams();
+    double f1(double x, double a, double b, double c);
 private slots:
     void on_btnStart_clicked();
 

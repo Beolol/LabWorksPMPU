@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>466</width>
-    <height>372</height>
+    <width>616</width>
+    <height>380</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,14 +16,152 @@
   <widget class="QPushButton" name="btnStart">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>290</y>
+     <x>340</x>
+     <y>310</y>
      <width>75</width>
      <height>23</height>
     </rect>
    </property>
    <property name="text">
     <string>Расчитать</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>40</y>
+     <width>47</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>a</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>40</y>
+     <width>47</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>b</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>40</y>
+     <width>47</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>c</string>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="sboxA">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>40</y>
+     <width>62</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="sboxB">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>40</y>
+     <width>62</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="sboxC">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>40</y>
+     <width>62</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>28</x>
+     <y>100</y>
+     <width>196</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Кол-во шагов сетки по x:</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="editGridNumberX">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>100</y>
+     <width>276</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>28</x>
+     <y>150</y>
+     <width>196</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Кол-во шагов сетки по t:</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="editGridNumberT">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>150</y>
+     <width>276</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>28</x>
+     <y>200</y>
+     <width>196</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Длинна шага сетки по t:</string>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="sboxLengthStepGridT">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>200</y>
+     <width>271</width>
+     <height>22</height>
+    </rect>
    </property>
   </widget>
  </widget>
