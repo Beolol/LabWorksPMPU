@@ -1,4 +1,4 @@
-#ifndef LAB2_H
+﻿#ifndef LAB2_H
 #define LAB2_H
 
 #include <QDialog>
@@ -14,13 +14,18 @@ class Lab2 : public QDialog
 public:
     explicit Lab2(QWidget *parent = 0);
     ~Lab2();
-    InitParams();
+    void SetParams();
     double f1(double x, double a, double b, double c);
+    void SetSizeVectors();
 private slots:
     void on_btnStart_clicked();
 
 private:
     Ui::Lab2 *ui;
+    QVector<double> U;
+    QVector<double> Bas;
+    int gridOfX;
+    int gridOfT;
 };
 
 #endif // LAB2_H
