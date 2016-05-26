@@ -15,8 +15,9 @@ public:
     explicit Lab2(QWidget *parent = 0);
     ~Lab2();
     void SetParams();
-    double f1(double x, double a, double b, double c);
     void SetSizeVectors();
+    QVector<double> Calculation(double lya);
+    double f1(double x);
 private slots:
     void on_btnStart_clicked();
 
